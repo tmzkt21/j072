@@ -7,7 +7,7 @@ import org.zerock.j07.board.entity.Board;
 
 public interface BoardRepository extends JpaRepository<Board,Long> {
 
-    @Modifying
-    @Query("update Board set title =:title where bno = :bno")
-    void updateContent(String title, Long bno);
+//    @Modifying
+  //  @Query("update Board set title =:title where bno = :bno")
+    //void updateContent(String title, Long bno);
 }

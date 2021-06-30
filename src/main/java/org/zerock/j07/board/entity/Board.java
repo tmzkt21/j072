@@ -2,6 +2,7 @@ package org.zerock.j07.board.entity;
 
 import lombok.*;
 import org.zerock.j07.common.entity.BaseEntity;
+
 import javax.persistence.*;
 
 @Entity
@@ -20,5 +21,11 @@ public class Board extends BaseEntity {
     private String title;
     private String content;
     private String writer;
+
+    public void change(String title, String content, String writer) {
+        this.title = title;
+        this.content = content;
+        this.writer = writer;
+    }
 
 }
