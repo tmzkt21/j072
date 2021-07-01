@@ -8,6 +8,5 @@ import org.zerock.j07.board.entity.Reply;
 
 public interface ReplyRepository extends JpaRepository<Reply, Long> {
 
-    //   void getByBoard(Board board, Pageable page);
-    //Page<Board> getByBoard(Board board, Pageable paging);
+    Page<Reply> getByBoard(Board board, Pageable pageable);
 }
