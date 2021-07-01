@@ -29,11 +29,12 @@ public class TodoRepositoryTests {
     public void test1() {
         log.info(todoRepository.getClass().getName());
     }
+
     @Test
     public void testInsert() {
 
-        IntStream.rangeClosed(1,300).forEach(i -> {
-            Todo todo = Todo.builder().content("내용..."+i).build();
+        IntStream.rangeClosed(1, 300).forEach(i -> {
+            Todo todo = Todo.builder().content("내용..." + i).build();
             todoRepository.save(todo);
         });//loop
     }
@@ -52,7 +53,7 @@ public class TodoRepositoryTests {
     @Test
     public void testPaging() {
 
-        Pageable pageable = PageRequest.of(0,10, Sort.by("tno").descending());
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("tno").descending());
 
         Page<Todo> result = todoRepository.findAll(pageable);
 
@@ -79,10 +80,11 @@ public class TodoRepositoryTests {
 
         todoRepository.delete(Todo.builder().tno(300L).build());
     }
+
     @Transactional
     @Commit
     @Test
-    public void testUpdate2(){
+    public void testUpdate2() {
 
         todoRepository.updateContent("299.....", 299L);
 
@@ -91,9 +93,25 @@ public class TodoRepositoryTests {
     @Test
     public void testList() {
         String keyword = "15";
-        Pageable pageable = PageRequest.of(0,10);
-        Page<Todo> result = todoRepository.getList(keyword,pageable);
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Todo> result = todoRepository.getList(keyword, pageable);
         log.info(result.getTotalElements());
+        result.getContent().forEach(todo -> {
+            log.info(todo);
+        });
+    }
+
+    @Test
+    public void testDao() {
+        todoRepository.doA();
+    }
+
+    @Test
+    public void testWithSearch() {
+        String keyword = "29";
+        Pageable pageable = PageRequest.of(0, 10);
+
+        Page<Todo> result = todoRepository.listWithSearch(keyword,pageable);
         result.getContent().forEach(todo -> {
             log.info(todo);
         });
