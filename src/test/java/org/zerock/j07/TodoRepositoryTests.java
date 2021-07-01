@@ -44,7 +44,6 @@ public class TodoRepositoryTests {
 
         Optional<Todo> result = todoRepository.findById(1L);
 
-        //log.info(result.get());
 
         result.ifPresent(todo -> log.info(todo));
 

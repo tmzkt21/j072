@@ -10,32 +10,50 @@ import org.zerock.j07.todo.service.TodoService;
 
 @RestController
 @RequestMapping("/todos")
-@Log4j2
 @RequiredArgsConstructor
+@Log4j2
 public class TodoController {
 
     private final TodoService todoService;
 
+
+    @PostMapping("/")
+    public ResponseEntity<Long> register(@RequestBody TodoDTO todoDTO){
+
+        log.info("register................." + todoDTO);
+
+        Long tno = todoService.register(todoDTO);
+
+        log.info("RESULT: " + tno);
+
+        return ResponseEntity.ok().body(tno);
+    }
+
     @GetMapping("/{tno}")
-    public ResponseEntity<TodoDTO> read(@PathVariable Long tno) {
+    public ResponseEntity<TodoDTO> read(@PathVariable Long tno ){
 
         TodoDTO dto = todoService.read(tno);
 
         return ResponseEntity.ok().body(dto);
     }
 
-    @PostMapping("/")
-    public ResponseEntity<Long> register(@RequestBody TodoDTO todoDTO) {
+    @DeleteMapping("/{tno}")
+    public ResponseEntity<Long> remove(@PathVariable Long tno){
 
-        log.info("register" + todoDTO);
+        Long deletedTno = todoService.remove(tno);
 
-        Long tno = todoService.register(todoDTO);
-
-        log.info("RESULT:" + tno);
-
-//        return ResponseEntity.ok().body(100L);
-        return ResponseEntity.ok().body(tno);
+        return ResponseEntity.ok().body(deletedTno);
     }
 
+    @PutMapping("/{tno}")
+    public ResponseEntity<TodoDTO> modify(@PathVariable Long tno, @RequestBody TodoDTO todoDTO){
 
+        todoDTO.setTno(tno);
+
+        log.info(todoDTO);
+
+        TodoDTO resultDTO = todoService.modify(todoDTO);
+
+        return ResponseEntity.ok(resultDTO);
+    }
 }

@@ -26,4 +26,7 @@ public class Todo extends BaseEntity {
     public void changeTitle(String content){
         this.content = content;
     }
+    public void changeDel(boolean del){
+        this.del = del;
+    }
 }

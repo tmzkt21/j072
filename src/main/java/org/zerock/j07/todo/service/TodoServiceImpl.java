@@ -11,19 +11,19 @@ import java.util.Optional;
 
 @Service
 @Log4j2
-@RequiredArgsConstructor            // ...1
-public class TodoServiceImpl implements TodoService {
+@RequiredArgsConstructor
+public class TodoServiceImpl implements TodoService{
 
-    private final TodoRepository todoRepository;            // ...2 1+2로 알아서 todoRepository를 주입해줌
+    private final TodoRepository todoRepository;
 
     @Override
     public Long register(TodoDTO dto) {
 
+        log.info(dto);
+
         Todo entity = dtoToEntity(dto);
 
         todoRepository.save(entity);
-
-        log.info(dto);
 
         return entity.getTno();
     }
@@ -33,13 +33,40 @@ public class TodoServiceImpl implements TodoService {
 
         Optional<Todo> result = todoRepository.findById(tno);
 
-        result.ifPresent(read -> {
-            log.info(read);
-        });
-        if(result.isPresent()) {
+        log.info(result);
+
+        if(result.isPresent()){
             Todo todo = result.get();
             return entityToDTO(todo);
         }
+
         return null;
+    }
+
+    @Override
+    public Long remove(Long tno) {
+
+        todoRepository.deleteById(tno);
+
+        return tno;
+    }
+
+    @Override
+    public TodoDTO modify(TodoDTO todoDTO) {
+
+        Optional<Todo> result = todoRepository.findById(todoDTO.getTno());
+
+        if(result.isPresent()){
+
+            Todo entity = result.get();
+            entity.changeTitle(todoDTO.getContent());
+            entity.changeDel(todoDTO.isDel());
+
+            todoRepository.save(entity);
+
+            return entityToDTO(entity);
+        }
+        return null;
+
     }
 }
